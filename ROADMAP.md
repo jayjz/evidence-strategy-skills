@@ -458,7 +458,7 @@ Examples:
 * citation format is valid;
 * output conforms to schema;
 * runtime recorded metadata;
-* a skill did or did not activate.
+* a complete runtime trace records whether skill instructions loaded.
 
 ## Empirical observations
 
@@ -830,7 +830,11 @@ without requiring a large external handoff.
 
 # Phase P1 — Methodology Foundation
 
-**Status: NOT STARTED**
+**Status: COMPLETE — written methodology gate, 2026-09-13**
+
+Evidence and limitations: [completed P1 plan](docs/exec-plans/completed/P1-methodology-foundation.md).
+The usefulness thesis remains untested. Next is the adversarial methodology
+review in the Immediate Sequence; P2 remains NOT STARTED.
 
 Purpose:
 

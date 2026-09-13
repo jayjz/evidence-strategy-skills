@@ -117,7 +117,7 @@ src/evidence_strategy_skills/
 
 The evidence layer represents only what is required to preserve and evaluate research claims.
 
-Initial claim states:
+P1 claim summary states:
 
 ```text
 SUPPORTED
@@ -126,7 +126,7 @@ UNRESOLVED
 CONFLICTED
 ```
 
-The evidence layer should eventually support enough provenance to distinguish:
+The evidence layer preserves enough provenance to distinguish:
 
 ```text
 claim
@@ -258,42 +258,34 @@ This structure exists to minimize repeated context and large handoff prompts.
 
 # Evidence Model
 
-The initial architecture intentionally keeps evidence small.
-
-A claim might conceptually resemble:
+The P1 evidence model stays small: an `EvidencePacket` contains source passages
+and claims. A scoped claim might resemble:
 
 ```yaml
-text: Users report unreliable skill activation.
-status: SUPPORTED
+text: One reporter described a skill-loading failure in their stated environment.
+status: supported
 source_refs:
   - source-001
-  - source-002
+contradiction_refs: []
 ```
 
-That is intentionally incomplete.
-
-Future needs may justify fields such as:
-
-```text
-source type
-date
-quoted or paraphrased evidence
-contradictions
-scope
-context
-```
-
-Do not add them speculatively.
-
-The evidence model should evolve from the first real research workflows.
+The source record retains origin/locator, dates, a short quote or paraphrase,
+context and limitations. Claims refer separately to support and counterevidence;
+inferred, unresolved and conflicted claims require a rationale. Scope and
+attribution belong in claim text. Packet validation checks reference resolution,
+not truth, entailment, source independence or the adequacy of a research design.
+The exact contract is in [docs/evidence-standard.md](docs/evidence-standard.md).
+Social episode annotations and experiment metadata remain documentary until a
+real workflow needs executable validation. No general provenance graph is needed.
 
 ---
 
 # Evidence Semantics
 
+The states are review summaries, not truth values or an ordinal confidence scale.
 `SUPPORTED` means:
 
-> available evidence provides support for this claim.
+> retained evidence directly supports this scoped claim, with no reviewed material counterevidence left unaddressed.
 
 It does not mean:
 
@@ -309,9 +301,12 @@ It does not mean:
 
 `CONFLICTED` means:
 
-> meaningful evidence supports incompatible interpretations or claims.
+> material counterevidence challenges the claim, or relevant accounts remain incompatible after checking scope, time and definitions.
 
-These semantics may evolve during the methodology phase.
+Conflict does not require equal support for two sides. It takes precedence over
+an inference label; the rationale preserves the inference and the contradiction.
+Missing essential premises make a claim UNRESOLVED. See the evidence standard
+for the state decision rule and treatment of refuted universal claims.
 
 ---
 
@@ -325,12 +320,14 @@ official product/company evidence
 market evidence
 customer/community evidence
 empirical runtime evidence
-analytical inference
+synthetic test material
 ```
 
 Different source types answer different questions.
 
 No universal source ranking should substitute for claim-specific judgment.
+Analytical inference is a claim operation over evidence, not an independent
+source category.
 
 ---
 
@@ -369,7 +366,7 @@ Examples:
 required field exists
 citation present
 schema valid
-skill activated
+trace records verified skill loading
 ```
 
 ## Empirical observations
@@ -403,25 +400,18 @@ Do not collapse all judgments into a single pseudo-objective score.
 
 # Reproducibility Boundary
 
-Meaningful experiment results should eventually preserve environmental context, potentially including:
+P1 defines the minimum documentary record in
+[docs/evaluation-standard.md](docs/evaluation-standard.md#minimum-experiment-record):
+frozen protocol and inputs, actual code/skill revision, model/runtime and visible
+configuration, tool/catalog access, paired attempt identity, raw outputs/traces,
+usage, load evidence, and grading provenance. Unknown host details remain
+explicitly unknown. P2 will encode only what its bounded demonstration consumes.
 
-```text
-git commit
-skill version
-runtime
-model
-model version
-reasoning effort
-date
-tool access
-web access
-other installed skills
-evaluation configuration
-```
-
-The minimal schema should be determined during the evaluation-foundation phase.
-
-Do not over-design it before the first experiment.
+Activation requests, verified loading, and effectiveness are distinct. Begin
+with fresh isolated baseline/treatment sessions over identical fixed evidence;
+do not expose the baseline to this repository's methodology through instructions
+or installed skills. Live acquisition and cross-runtime behavior are separate
+comparisons, with their own confounds and limits.
 
 ---
 

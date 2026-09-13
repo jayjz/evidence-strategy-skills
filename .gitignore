@@ -18,3 +18,4 @@ build/
 
 evals/results/*
 !evals/results/.gitkeep
+repomix-output.xml
